@@ -1,0 +1,9 @@
+import {mkdir,cp,readFile,writeFile,rm} from 'node:fs/promises';
+import {wedding as w} from '../src/config/wedding.js';
+await rm('dist',{recursive:true,force:true});await mkdir('dist');await cp('public','dist/public',{recursive:true});await cp('src','dist/src',{recursive:true});
+const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let html=await readFile('index.html','utf8');html=html.replace('<title>Nosso casamento | 12.12.2026</title>',`<title>${esc(w.bride)} &amp; ${esc(w.groom)} — Casamento | 12.12.2026</title>`);
+const dt=new Date(w.date);const dateLong=new Intl.DateTimeFormat('pt-BR',{timeZone:w.timezone,day:'numeric',month:'long',year:'numeric'}).format(dt);const dateParts=new Intl.DateTimeFormat('pt-BR',{timeZone:w.timezone,day:'2-digit',month:'2-digit',year:'numeric'}).format(dt).split('/');
+html=html.replaceAll('12 de dezembro de 2026',esc(dateLong)).replaceAll('12.12.2026',dateParts.join('.')).replaceAll('12 <i>•</i> 12 <i>•</i> 2026',dateParts.join(' <i>•</i> '));
+if(w.siteUrl){const base=new URL(w.siteUrl).origin;html=html.replace('</head>',`<link rel="canonical" href="${base}/"><meta property="og:url" content="${base}/"><meta property="og:image" content="${base}/public/social-preview.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Vamos nos casar em 12 de dezembro de 2026"></head>`);await writeFile('dist/sitemap.xml',`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${base}/</loc></url></urlset>`);await writeFile('dist/robots.txt',`User-agent: *\nAllow: /\nSitemap: ${base}/sitemap.xml\n`);}else await writeFile('dist/robots.txt','User-agent: *\nAllow: /\n');
+await writeFile('dist/index.html',html);console.log('Build estático concluído.');

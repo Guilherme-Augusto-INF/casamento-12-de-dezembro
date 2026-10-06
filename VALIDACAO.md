@@ -1,0 +1,11 @@
+# Validação · 06/10/2026
+- Build estático concluído; 5 testes de unidade passaram.
+- Playwright local: 320, 375, 390, 430, 768, 1366 e 1920 px, sem overflow.
+- Menu mobile, galeria, próximo/anterior, Escape, FAQ, RSVP sem contato, âncoras e reduced motion: passaram.
+- Console e carregamento dos assets locais: sem erros.
+- Lighthouse mobile local: Performance 98; Accessibility 100; Best Practices 100; SEO 100. Resultados de laboratório, sujeitos a variação.
+- Produção Vercel: página, imagens, contador, galeria e RSVP pendente verificados no navegador remoto. Acesso HTTPS público.
+- O navegador local não acessou a Vercel por limitação de rede; a matriz de larguras foi executada sobre o build local.
+- Não foram enviadas mensagens. RSVP, rotas Maps e presentes aguardam dados reais; os destinos externos não foram validados.
+- Corrigidos contraste dourado, nome acessível do logo, alt da foto principal e prioridade dos nomes no hero mobile.
+- Repositório público: Guilherme-Augusto-INF/casamento-12-de-dezembro, branch main. Código enviado por commit único após a criação do repositório.
